@@ -1,6 +1,7 @@
 package service;
 
 import discount.DiscountStrategy;
+import exception.InvalidCheckoutException;
 import lombok.extern.slf4j.Slf4j;
 import model.*;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,9 @@ public class CheckoutService {
     }
 
     public Receipt calculateReceipt(CheckoutRequest request){
+        if(request == null || request.getItems() == null || request.getItems().isEmpty()){
+            throw new InvalidCheckoutException("Checkout must contain at least one Item");
+        }
         log.info("Checkout request received with {} items", request.getItems().size());
         BigDecimal subTotal = calculateSubTotal(request);
         List<DiscountLine> discounts = calculateDiscounts(request);
