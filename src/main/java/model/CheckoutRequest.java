@@ -3,19 +3,19 @@ package model;
 import java.util.List;
 
 public class CheckoutRequest {
-    private List<BasketItem> item;
+    private List<BasketItem> items;
     public CheckoutRequest(){
     }
 
-    public CheckoutRequest(List<BasketItem> item) {
-        this.item = item;
+    public CheckoutRequest(List<BasketItem> items) {
+        this.items = items;
     }
 
-    public List<BasketItem> getItem() {
-        return item;
+    public List<BasketItem> getItems() {
+        return items;
     }
 
-    public void setItem(List<BasketItem> item) {
-        this.item = item;
+    public void setItem(List<BasketItem> items) {
+        this.items = items;
     }
 }

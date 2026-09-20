@@ -1,8 +1,8 @@
 package service;
 
-import model.BasketItem;
-import model.CheckoutRequest;
-import model.ItemType;
+import discount.BananaDiscountStrategy;
+import discount.OrangeDiscountStrategy;
+import model.*;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -19,7 +19,7 @@ public class CheckoutServiceTest {
         when(priceCatalog.getPrice(ItemType.BANANA)).thenReturn(new BigDecimal("0.50"));
         when(priceCatalog.getPrice(ItemType.APPLE)).thenReturn(new BigDecimal("0.60"));
         when(priceCatalog.getPrice(ItemType.ORANGE)).thenReturn(new BigDecimal("0.30"));
-        CheckoutService checkoutService = new CheckoutService(priceCatalog);
+        CheckoutService checkoutService = new CheckoutService(priceCatalog, List.of());
         CheckoutRequest checkoutRequest = new CheckoutRequest(
                 List.of(
                         new BasketItem(ItemType.BANANA,3),
@@ -28,5 +28,38 @@ public class CheckoutServiceTest {
                         ));
         BigDecimal subTotal = checkoutService.calculateSubTotal(checkoutRequest);
         assertEquals(new BigDecimal("3.30"),subTotal);
+    }
+
+    @Test
+    void shouldCalculateDiscounts(){
+        PriceCatalog priceCatalog = new PriceCatalog();
+        BananaDiscountStrategy bananaDiscountStrategy = new BananaDiscountStrategy(priceCatalog);
+        OrangeDiscountStrategy orangeDiscountStrategy = new OrangeDiscountStrategy(priceCatalog);
+        CheckoutService checkoutService = new CheckoutService(
+                priceCatalog,List.of(bananaDiscountStrategy,orangeDiscountStrategy)
+        );
+        CheckoutRequest request = new CheckoutRequest(List.of(new BasketItem(ItemType.BANANA,3),
+                new BasketItem(ItemType.ORANGE,4),new BasketItem(ItemType.APPLE,1)));
+        List<DiscountLine> discounts = checkoutService.calculateDiscounts(request);
+        assertEquals(2,discounts.size());
+        assertEquals(new BigDecimal("0.50"),discounts.get(0).getAmount());
+        assertEquals(new BigDecimal("0.15"),discounts.get(1).getAmount());
+    }
+
+    @Test
+    void shouldCalculateCompleteReceipt(){
+        PriceCatalog priceCatalog = new PriceCatalog();
+        BananaDiscountStrategy bananaDiscountStrategy = new BananaDiscountStrategy(priceCatalog);
+        OrangeDiscountStrategy orangeDiscountStrategy = new OrangeDiscountStrategy(priceCatalog);
+        CheckoutService checkoutService = new CheckoutService(
+                priceCatalog,
+                List.of(bananaDiscountStrategy,orangeDiscountStrategy)
+        );
+        CheckoutRequest request = new CheckoutRequest(List.of(new BasketItem(ItemType.BANANA,3),
+                new BasketItem(ItemType.ORANGE,4),new BasketItem(ItemType.APPLE,1)));
+        Receipt receipt = checkoutService.calculateReceipt(request);
+        assertEquals(new BigDecimal("3.30"),receipt.getSubTotal());
+        assertEquals(new BigDecimal("0.65"),receipt.getTotalDiscount());
+        assertEquals(new BigDecimal("2.65"),receipt.getTotal());
     }
 }
