@@ -1,9 +1,13 @@
 package model;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+
 import java.util.List;
 
 public class CheckoutRequest {
-    private List<BasketItem> items;
+    @NotEmpty(message = "Items cannot be empty")
+    private List<@Valid BasketItem> items;
     public CheckoutRequest(){
     }
 
@@ -15,7 +19,7 @@ public class CheckoutRequest {
         return items;
     }
 
-    public void setItem(List<BasketItem> items) {
+    public void setItems(List<BasketItem> items) {
         this.items = items;
     }
 }

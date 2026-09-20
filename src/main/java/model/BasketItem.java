@@ -1,7 +1,12 @@
 package model;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 public class BasketItem {
+    @NotNull(message = "Item type is required")
     private ItemType itemType;
+    @Positive(message = "Quantity should be greater than zero")
     private int quantity;
 
     public BasketItem(ItemType itemType, int quantity) {

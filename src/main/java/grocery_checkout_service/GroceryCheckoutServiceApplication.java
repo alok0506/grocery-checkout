@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 		"controller",
 		"service",
 		"discount",
+		"exception",
 		"grocery_checkout_service"
 })
 public class GroceryCheckoutServiceApplication {
