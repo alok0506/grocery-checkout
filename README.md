@@ -66,11 +66,13 @@ The application supports the following promotions:
 ## Setup
 1. Clone the repository:
     git clone <https://github.com/alok0506/grocery-checkout.git>
-2. Open the project in IntelliJ IDEA.
+2. Open the project in IDE.
 3. Run the application using:
    ./mvnw spring-boot:run
 4. The application will start at:
    http://localhost:8080
+5. Run Tests
+    ./mvnw clean test
 
 
 ## API
