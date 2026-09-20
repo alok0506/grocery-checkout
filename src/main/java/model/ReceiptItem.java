@@ -3,10 +3,10 @@ package model;
 import java.math.BigDecimal;
 
 public class ReceiptItem {
-    private ItemType itemType;
-    private int quantity;
-    private BigDecimal unitPrice;//price of one item
-    private BigDecimal lineTotal;//price of item (quantity * unit price)
+    private ItemType itemType;//Product name/type
+    private int quantity;//Number of units Purchased
+    private BigDecimal unitPrice;//Price of one item
+    private BigDecimal lineTotal;//Price of item (quantity * unit price)
     public ReceiptItem(){
 
     }

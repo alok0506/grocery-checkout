@@ -43,15 +43,16 @@ public class CheckoutServiceTest {
                         new BasketItem(ItemType.ORANGE,4),
                         new BasketItem(ItemType.APPLE,1)
                         ));
-        BigDecimal subTotal = checkoutService.calculateSubTotal(checkoutRequest);
-        assertEquals(new BigDecimal("3.30"),subTotal);
+        Receipt receipt = checkoutService.calculateReceipt(checkoutRequest);
+        assertEquals(new BigDecimal("3.30"),receipt.getSubTotal());
     }
 
     @Test
     void shouldCalculateDiscounts(){
         CheckoutRequest request = new CheckoutRequest(List.of(new BasketItem(ItemType.BANANA,3),
                 new BasketItem(ItemType.ORANGE,4),new BasketItem(ItemType.APPLE,1)));
-        List<DiscountLine> discounts = checkoutService.calculateDiscounts(request);
+        Receipt receipt = checkoutService.calculateReceipt(request);
+        List<DiscountLine> discounts = receipt.getDiscounts();
         assertEquals(2,discounts.size());
         assertEquals(new BigDecimal("0.50"),discounts.get(0).getAmount());
         assertEquals(new BigDecimal("0.15"),discounts.get(1).getAmount());

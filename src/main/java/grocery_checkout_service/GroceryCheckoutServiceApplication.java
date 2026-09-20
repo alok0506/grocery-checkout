@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 		"service",
 		"discount",
 		"exception",
+		"integration",
 		"grocery_checkout_service"
 })
 public class GroceryCheckoutServiceApplication {

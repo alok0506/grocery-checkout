@@ -2,13 +2,13 @@ package model;
 
 import java.math.BigDecimal;
 import java.util.List;
-
+//Represents the final receipt returned by the checkout system.
 public class Receipt {
-    private List<ReceiptItem> items;
-    private BigDecimal subTotal;
-    private  List<DiscountLine> discounts;
-    private BigDecimal totalDiscount;
-    private BigDecimal total;
+    private List<ReceiptItem> items;//Stores items included in the receipt.
+    private BigDecimal subTotal;//Total price before applying discount.
+    private  List<DiscountLine> discounts;//Represents individual discounts for each Item.
+    private BigDecimal totalDiscount;//Represents total discount price applied of all items.
+    private BigDecimal total;//Final price of all products after applying discount
     public Receipt(){
 
     }

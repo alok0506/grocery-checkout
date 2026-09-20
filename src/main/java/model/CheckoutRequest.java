@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 
 public class CheckoutRequest {
-    @NotEmpty(message = "Items cannot be empty")
+
     private List<@Valid BasketItem> items;
     public CheckoutRequest(){
     }
