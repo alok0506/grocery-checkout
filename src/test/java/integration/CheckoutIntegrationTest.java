@@ -49,4 +49,26 @@ class CheckoutIntegrationTest {
                 .andExpect(jsonPath("$.totalDiscount").value(0.65))
                 .andExpect(jsonPath("$.total").value(2.65));
     }
+
+    @Test
+    void shouldReturnBadRequestForInvalidQuantity() throws Exception {
+
+        String requestBody = """
+            {
+                "items": [
+                    {
+                        "itemType": "BANANA",
+                        "quantity": 0
+                    }
+                ]
+            }
+            """;
+
+        mockMvc.perform(
+                        post("/checkout")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestBody)
+                )
+                .andExpect(status().isBadRequest());
+    }
 }
