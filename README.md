@@ -78,7 +78,7 @@ The application supports the following promotions:
 ## API
 **Method:** POST
 **URL:**
-    http://localhost:8080/checkout
+    http://localhost:8080/checkout/receipt
 ## RequestBody
 {
 "items": [
