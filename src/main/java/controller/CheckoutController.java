@@ -18,9 +18,11 @@ public class CheckoutController {
     public CheckoutController(CheckoutService checkoutService) {
         this.checkoutService = checkoutService;
     }
-    @PostMapping
-    public Receipt checkout(@Valid @RequestBody CheckoutRequest request){
-        log.info("Received checkout API request");
-        return checkoutService.calculateReceipt(request);
+
+    @PostMapping("/receipt")
+    public String checkoutV2(@Valid @RequestBody CheckoutRequest request){
+        log.info("Received checkout API request in v2");
+        Receipt receipt = checkoutService.calculateReceipt(request);
+        return receipt.toString();
     }
 }

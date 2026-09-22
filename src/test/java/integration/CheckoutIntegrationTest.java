@@ -7,9 +7,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = GroceryCheckoutServiceApplication.class)
@@ -39,36 +41,43 @@ class CheckoutIntegrationTest {
                 }
                 """;
 
-        mockMvc.perform(
-                        post("/checkout")
+        MvcResult result = mockMvc.perform(
+                        post("/checkout/receipt")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(requestBody)
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.subTotal").value(3.30))
-                .andExpect(jsonPath("$.totalDiscount").value(0.65))
-                .andExpect(jsonPath("$.total").value(2.65));
+                .andReturn();
+        String response = result.getResponse().getContentAsString();
+        System.out.println("Hi Alok" + response);
+        assertTrue(response.contains("Subtotal:"));
+
+        assertTrue(response.contains("£3.30"));
+        assertTrue(response.contains("Total Discount:"));
+        assertTrue(response.contains("£0.65"));
+        assertTrue(response.contains("£2.65"));
     }
 
     @Test
     void shouldReturnBadRequestForInvalidQuantity() throws Exception {
 
         String requestBody = """
-            {
-                "items": [
-                    {
-                        "itemType": "BANANA",
-                        "quantity": 0
-                    }
-                ]
-            }
-            """;
+                {
+                    "items": [
+                        {
+                            "itemType": "BANANA",
+                            "quantity": 0
+                        }
+                    ]
+                }
+                """;
 
-        mockMvc.perform(
-                        post("/checkout")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(requestBody)
-                )
-                .andExpect(status().isBadRequest());
+        MvcResult result = mockMvc.perform(
+                post("/checkout/receipt")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody)
+        ).andReturn();
+        int status = result.getResponse().getStatus();
+        assertEquals(400, status);
     }
 }

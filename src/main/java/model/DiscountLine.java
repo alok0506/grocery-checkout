@@ -1,8 +1,11 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 
 public class DiscountLine {
+    @JsonProperty("Description")
     private String description;
     private BigDecimal amount;
     public DiscountLine(){

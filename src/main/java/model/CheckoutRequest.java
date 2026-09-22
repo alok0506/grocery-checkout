@@ -1,14 +1,14 @@
 package model;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 
 import java.util.List;
 
 public class CheckoutRequest {
 
     private List<@Valid BasketItem> items;
-    public CheckoutRequest(){
+
+    public CheckoutRequest() {
     }
 
     public CheckoutRequest(List<BasketItem> items) {
